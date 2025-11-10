@@ -368,7 +368,7 @@ class MiTBlock(nn.Module):
         return self.mit(x)
 
 
-class DSCNet(nn.Module):
+class S3OCTA(nn.Module):
     def __init__(
         self,
         in_channels=3,

@@ -31,7 +31,7 @@ class HyperParameterManager:
         self.general_train_args.epochs = 200
         self.general_train_args.optimizer = "decay" # constant, decay, prodigy
         self.general_train_args.lr = 1e-4
-        self.general_train_args.batch_size = 1
+        self.general_train_args.batch_size = 4
         self.general_train_args.check_interval = 5
     
 
@@ -39,9 +39,9 @@ class HyperParameterManager:
         self.general_segment_args = Dict()
 
         self.general_segment_args.model_params = {
-            "DSCNet":{
+            "S3OCTA":{
                 "extend_scope": 7,
-                "kernel_size": 9,
+                "kernel_size": 11,
                 "layer_depth": 3,
                 "feature_num": 72,
                 "global_aggregation": "MiT" # SWinT, MiT, ASPP

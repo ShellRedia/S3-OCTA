@@ -11,7 +11,7 @@ from tqdm import tqdm
 from funcs.options.param_segment import HyperParameterManager
 from funcs.record.segmentation import ResultRecorder
 from funcs.dataset.manager import get_datasets
-from funcs.model.DSCNet import DSCNet
+from funcs.model.S3OCTA import S3OCTA
 
 from monai.networks.nets import *
 
@@ -97,10 +97,10 @@ class TrainingManager:
             dints_space = TopologyInstance(spatial_dims=2, num_blocks=12, device="cuda")
             model = DiNTS(dints_space=dints_space, in_channels=3, num_classes=1, spatial_dims=2)
             return ModifiedModel(model).to(self.device)
-        elif self.seg_args.model_name == "DSCNet":
-            mp = self.seg_args.model_params["DSCNet"]
+        elif self.seg_args.model_name == "S3OCTA":
+            mp = self.seg_args.model_params["S3OCTA"]
 
-            model = DSCNet(
+            model = S3OCTA(
                 in_channels=3, 
                 out_channels=1, 
                 kernel_size=mp["kernel_size"],
