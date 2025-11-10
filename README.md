@@ -109,4 +109,3 @@ The required third-party libraries are commonly used in deep image processing. I
 
 ## 4. Others
 
-The paper is still under review. To ensure originality, the complete resources (including pre-trained weights and testing scripts) will be released after the final acceptance of the manuscript.
