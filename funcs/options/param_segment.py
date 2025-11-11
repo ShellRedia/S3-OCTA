@@ -6,7 +6,6 @@ class HyperParameterManager:
     def __init__(self):
         self.set_train_parameters()
         self.set_general_segment_parser()
-        self.set_sam_parser()
 
     def get_basic_info(self):
         info_lst = [self.general_segment_args.model_name, self.general_segment_args.label_type, self.general_segment_args.dataset]
@@ -28,16 +27,17 @@ class HyperParameterManager:
     def set_train_parameters(self):
         self.general_train_args = Dict()
         self.general_train_args.device = "0"
-        self.general_train_args.epochs = 200
-        self.general_train_args.optimizer = "decay" # constant, decay, prodigy
+        self.general_train_args.epochs = 4
+        self.general_train_args.optimizer = "constant" # constant, decay, prodigy
         self.general_train_args.lr = 1e-4
-        self.general_train_args.batch_size = 4
+        self.general_train_args.batch_size = 1
         self.general_train_args.check_interval = 5
     
 
     def set_general_segment_parser(self):
         self.general_segment_args = Dict()
 
+        self.general_segment_args.weight_name = "octa500_rv_3m_m"
         self.general_segment_args.model_params = {
             "S3OCTA":{
                 "extend_scope": 7,
@@ -53,18 +53,8 @@ class HyperParameterManager:
             "SwinUNETR":{}
         }
 
-        self.general_segment_args.dataset = "ROSE" # OCTA-500_3M_6M, OCTA-500_3M, OCTA-500_6M, ROSE
+        self.general_segment_args.dataset = "OCTA-500_3M" # OCTA-500_3M_6M, OCTA-500_3M, OCTA-500_6M, ROSE
         self.general_segment_args.label_type = "RV" # RV, Artery, Vein
         self.general_segment_args.metrics = ["Dice", "Jaccard", "clDice", "HD95"]
-        self.general_segment_args.model_name = "DSCNet_RV_Merge" # DSCNet, SegResNet, FlexUNet, DiNTS, UNet, SwinUNETR
+        self.general_segment_args.model_name = "S3OCTA" # S3OCTA, SegResNet, FlexUNet, DiNTS, UNet, SwinUNETR
         self.general_segment_args.loss_func = "IBP_clDiceLoss" # DiceLoss, clDiceLoss, IBP_clDiceLoss
-        
-    
-    def set_sam_parser(self):
-        self.sam_args = Dict()
-        self.sam_args.rank = 16
-        self.sam_args.prompt_positive_num = 6
-        self.sam_args.prompt_negative_num = 6
-        self.sam_args.model_type = "vit_l"
-        self.sam_args.is_local = False
-        self.sam_args.is_local = "LoRA"

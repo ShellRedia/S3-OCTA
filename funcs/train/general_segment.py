@@ -143,7 +143,7 @@ class TrainingManager:
                     if is_complete:
                         self.recorder.save_prediction(image=images, label=labels, pred=preds, sub_dir="{:0>4}".format(epoch), sample_name=str(sample_ids[0].numpy()))
             if is_complete:
-                torch.save(self.model, '{}/{}.pth'.format(self.cpt_dir, self.seg_args.model_name))
+                torch.save(self.model.state_dict(), '{}/{}.pth'.format(self.cpt_dir, self.seg_args.model_name))
 
         is_complete = bool(epoch % (self.train_args.epochs // 4) == 0)
         record_dataloader(self.train_loader, loader_type="train", is_complete=is_complete)

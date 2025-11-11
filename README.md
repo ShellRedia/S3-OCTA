@@ -19,7 +19,11 @@ An end-to-end deep learning __PyTorch__ framework for retinal vessel segmentatio
 - __OCTA-25K__: https://arxiv.org/abs/2107.10476
 
 ### 1.3 GPU Memory
-- **Recommended**: 20GB GPU memory for optimal performance
+
+Different configurations consume different GPU memory. You can modify model depth and channel count in train.py:
+
+- **Recommended**: 12 GB GPU.
+- **Optimal**: 20 GB GPU for best performance.
 - ⚠️ **Note**: Performance significantly degrades with less than 3GB GPU memory
 
 
@@ -88,15 +92,27 @@ Code path: funcs\dataset\rose_o.py
 - IBP Loss Function Definition: funcs\loss_function\clDice.py
 - Training Hyperparameters: funcs\options\param_segment.py
 - Training Framework: funcs\train\general_segment.py
-- Start Training: launcher.py
+- Start Training: train.py
 
 ### 2.3 Start Training
 
-Run the following command to begin training:
+Install the packages in __requirements.txt__, then run:
 
-    python launcher.py
+    python train.py
 
-The required third-party libraries are commonly used in deep image processing. If any third-party package missing occur, simply use pip install to resolve them.
+During training, prediction images and metrics are saved by training date under: results/segmentation/train/yyyy_MM_dd_hh_mm_ss
+
+### 2.4 Model Testing
+
+Run the following to test the model:
+
+    python evaluate.py
+
+Testing instantiates the model first and then loads the weights, so set parameters according to the model spec. __m.pth__ denotes medium; set __layer_depth=3__, __feature_num=72__. __l.pth__ denotes large; set __layer_depth=4__, __feature_num=144__. Then place the weights at: assets\checkpoints\your_weight_name.pth. In __evaluate.py__, modify: para_manager.general_segment_args.weight_name = "your_weight_name"
+
+Weights (Baidu Netdisk): Link: https://pan.baidu.com/s/1D7ShJYp0qPOQqBVvgZZ4Bg?pwd=q6sj Extraction code: q6sj
+
+Result path: results/segmentation/evaluate/yyyy_MM_dd_hh_mm_ss
 
 ## 3. Segmentation Preview (OCTA-500)
 
@@ -109,4 +125,4 @@ The required third-party libraries are commonly used in deep image processing. I
 
 ## 4. Others
 
-The paper has just been published, and the repository is currently under inspection and maintenance.
+Paper online: https://doi.org/10.1016/j.bspc.2025.109117

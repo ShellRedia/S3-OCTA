@@ -1,2 +1,13 @@
+addict
 torch
 torchvision
+tqdm
+opencv-python
+pandas
+medpy
+scikit-image
+imgaug
+numpy<2
+einops
+monai
+openpyxl

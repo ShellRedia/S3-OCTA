@@ -13,6 +13,8 @@ from funcs.dataset.manager import get_datasets
 
 from monai.networks.nets import *
 
+from funcs.model.S3OCTA import S3OCTA
+
 class EvaluationManager:
     def __init__(self, param_manager: HyperParameterManager):
         self.seg_args = param_manager.general_segment_args
@@ -26,7 +28,6 @@ class EvaluationManager:
 
         self.record_dir = "results/segmentation/evaluate/{}".format(time_str)
     
-        fov = "6M" if "6M" in self.seg_args.dataset else "3M"
         self.recorder = ResultRecorder(param_manager, self.record_dir)
 
         dataset_train, dataset_val, dataset_test = get_datasets(self.seg_args.dataset, self.seg_args.label_type)
@@ -38,7 +39,8 @@ class EvaluationManager:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.to_cuda = lambda x: x.to(torch.float).to(self.device)
 
-        self.model = torch.load('assets/checkpoints/{}.pth'.format(self.seg_args.model_name), weights_only=False)
+        self.model = self.build_segmetation_model()
+        self.model.load_state_dict(torch.load('assets/checkpoints/{}.pth'.format(self.seg_args.weight_name)))
         self.model.eval()
 
         def record_dataloader(dataloader, loader_type="val"):
@@ -55,3 +57,16 @@ class EvaluationManager:
         record_dataloader(self.test_loader, loader_type="test")
 
         self.recorder.save_metric()
+
+    def build_segmetation_model(self):
+        mp = self.seg_args.model_params["S3OCTA"]
+
+        model = S3OCTA(
+            in_channels=3, 
+            out_channels=1, 
+            kernel_size=mp["kernel_size"],
+            layer_depth=mp["layer_depth"],
+            rate=mp["feature_num"],
+            ga=mp["global_aggregation"]
+        )
+        return model.to(self.device)

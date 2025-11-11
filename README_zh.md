@@ -17,7 +17,11 @@
 - __OCTA-25K__: https://arxiv.org/abs/2107.10476
 
 ### 1.3 显存
-- **推荐**: 20GB GPU显存以获得最佳性能。
+
+不同配置的模型所占用的显存的不同，可在 __train.py__ 文件中对模型深度和通道数进行修改：
+
+- **推荐**: 12GB GPU。
+- **最佳**: 20GB GPU显存以获得最佳性能。
 - ⚠️ **注意**: GPU显存少于3GB时性能会显著下降。
 
 
@@ -82,23 +86,32 @@ __ROSE__:
 
 ### 2.2 关键代码路径
 
-- 模型结构: funcs\model\DSCNet.py
+- 模型结构: funcs\model\S3OCTA.py
 - IBP损失函数定义：funcs\loss_function\clDice.py 
 - 训练超参数选项: funcs\options\param_segment.py
 - 训练过程框架：funcs\train\general_segment.py
-- 启动训练：launcher.py
+- 启动训练：train.py
 
 ### 2.3 启动训练
 
-运行以下代码开始训练：
+依次安装 __requirements.txt__ 中的包，并运行以下文件开始训练：
 
-    python launcher.py
-
-所需要的第三方库都是深度图像常用的，报错直接pip install 即可。
-
-### 2.4 查看结果
+    python train.py
 
 训练过程中的预测图像和指标会根据训练日期保存于路径：results/segmentation/train/yyyy_MM_dd_hh_mm_ss
+
+### 2.4 模型测试
+
+运行以下文件对模型进行测试：
+
+    python evaluate.py
+
+测试的实现是先创建模型后再加载权重，所以需要根据模型规格设置对应参数。__m.pth__ 表示medium（中型），需设置 __layer_depth=3__, __feature_num=72__; __l.pth__ 表示large（大型），需设置 __layer_depth=4__, __feature_num=144__。随后将权重文件放在路径：assets\checkpoints\你的权重名.pth。并在 __evaluate.py__ 中, 修改语句para_manager.general_segment_args.weight_name = "你的权重名"
+
+权重下载（百度网盘）：链接: https://pan.baidu.com/s/1D7ShJYp0qPOQqBVvgZZ4Bg?pwd=q6sj 提取码: q6sj 
+
+预测图像和指标会根据训练日期保存于路径: results/segmentation/evaluate/yyyy_MM_dd_hh_mm_ss
+
 
 ## 3.分割样本示例(OCTA-500)
 
@@ -110,4 +123,4 @@ __ROSE__:
 
 ## 4. 其他
 
-论文刚已上线，该仓库正在进行检查维护
+论文已上线：https://doi.org/10.1016/j.bspc.2025.109117

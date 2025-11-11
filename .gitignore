@@ -1,0 +1,5 @@
+*.pth
+*.pyc
+assets/datasets/OCTA-500
+assets/datasets/ROSE-O
+results/
